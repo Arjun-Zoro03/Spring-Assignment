@@ -1,8 +1,8 @@
 package com.zemoso.springboot.gymmanagementsystem.controller;
 
 
-import com.zemoso.springboot.gymmanagementsystem.entity.Trainer;
-
+import com.zemoso.springboot.gymmanagementsystem.converter.TrainerConverter;
+import com.zemoso.springboot.gymmanagementsystem.dto.TrainerDTO;
 import com.zemoso.springboot.gymmanagementsystem.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("/trainer")
+@RequestMapping("/trainers")
 public class TrainerController {
+
+    private TrainerConverter trainerConverter = new TrainerConverter();
 
     @Autowired
     private TrainerService trainerService;
 
     @GetMapping("/home")
     public String getTrainer(@RequestParam("trainerId") int trainerId, Model model){
-        Trainer trainer = trainerService.findById(trainerId);
+
+        TrainerDTO trainer = trainerConverter.entityToDto(trainerService.findById(trainerId));
         model.addAttribute("trainer",trainer);
         return "trainer/trainer-home";
     }

@@ -7,9 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "authority")
+@Table(name = "authorities")
 @Getter @Setter
-public class Authority {
+public class Authorities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +19,10 @@ public class Authority {
     @Column(name = "authority")
     private String role;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
-    private User user;
+    private Users user;
 
-    public Authority() {
-
-    }
 
     @Override
     public String toString() {

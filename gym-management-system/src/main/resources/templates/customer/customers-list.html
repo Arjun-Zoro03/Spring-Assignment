@@ -13,7 +13,7 @@
 </head>
 <body>
 <h3>CUSTOMERS LIST</h3>
-<a th:href="@{/customer/showFormForAdd}" class="btn btn-primary btn-sm mb-4"> Add Customer </a>
+<a th:href="@{/customers/showFormForAdd(trainerId=${trainerId})}" class="btn btn-primary btn-sm mb-4"> Add Customer </a>
 <hr>
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
@@ -37,12 +37,12 @@
             <td th:text="${customer.endDate}"/>
             <td>
                 <a class="btn btn-warning btn-sm"
-                   th:href="@{/customer/update(customerId=${customer.customerId})}">
+                   th:href="@{/customers/update(customerId=${customer.customerId})}">
                     Update Details
                 </a>
                 <br><br>
                 <a class="btn btn-danger btn-sm"
-                   th:href="@{/customer/delete(customerId=${customer.customerId})}"
+                   th:href="@{/customers/delete(customerId=${customer.customerId})}"
                    onclick="if(!(confirm('Are you sure you want to delete this customer?'))) return false">
                     Delete
                 </a>
@@ -51,8 +51,15 @@
         </tbody>
     </table>
 
- <a th:href="@{/trainer/home(id=${trainerId})}">Trainer Home</a>
+ <a th:href="@{/trainers/home(trainerId=${trainerId})}">Trainer Home</a>
 
+
+<form action="#" th:action="@{/logout}"
+      method="POST">
+
+    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+</form>
 <!-- Optional JavaScript; choose one of the two! -->
 
 <!-- Option 1: Bootstrap Bundle with Popper -->

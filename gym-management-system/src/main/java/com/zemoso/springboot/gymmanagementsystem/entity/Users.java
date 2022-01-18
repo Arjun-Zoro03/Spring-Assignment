@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter @Setter
-public class User{
+public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "username")
-    private int username;
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -31,10 +30,6 @@ public class User{
     @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
-    public User() {
-
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -46,9 +41,9 @@ public class User{
     }
 
     @OneToMany(fetch = FetchType.LAZY,cascade =  CascadeType.ALL,mappedBy = "user")
-    private List<Authority> authorities;
+    private List<Authorities> authorities;
 
-    public void addAuthority(Authority authority){
+    public void addAuthority(Authorities authority){
         if (authorities == null)
             authorities = new ArrayList<>();
         authorities.add(authority);

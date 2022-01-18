@@ -29,9 +29,6 @@ public class Trainer {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    public Trainer() {
-
-    }
 
     @Override
     public String toString() {
@@ -45,7 +42,7 @@ public class Trainer {
     }
 
     @OneToOne(fetch = FetchType.LAZY,mappedBy = "trainer",cascade = CascadeType.ALL)
-    private User user;
+    private Users user;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})

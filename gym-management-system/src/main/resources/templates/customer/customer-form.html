@@ -20,7 +20,7 @@
 <hr>
 <div class="container">
     <h3>Save Customer Details</h3>
-    <form class="row g-3" action="#" th:action="@{/customer/save}"
+    <form class="row g-3" action="#" th:action="@{/customers/save}"
           th:object="${customer}" method="POST">
         <input type="hidden" th:field="*{customerId}"/>
         <div class="form-floating mb-3">
@@ -58,9 +58,16 @@
         </div>
     </form>
     <hr>
-    <a th:href="@{/customer/list(trainerId=${trainerId})}">Customers List</a>
+    <a th:href="@{/customers/list(trainerId=${trainerId})}">Customers List</a>
 </div>
 
+
+<form action="#" th:action="@{/logout}"
+      method="POST">
+
+    <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+</form>
 <!-- Optional JavaScript; choose one of the two! -->
 
 <!-- Option 1: Bootstrap Bundle with Popper -->

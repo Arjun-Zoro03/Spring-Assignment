@@ -1,7 +1,8 @@
 package com.zemoso.springboot.gymmanagementsystem.controller;
 
+import com.zemoso.springboot.gymmanagementsystem.converter.CustomerConverter;
+import com.zemoso.springboot.gymmanagementsystem.dto.CustomerDTO;
 import com.zemoso.springboot.gymmanagementsystem.entity.Customer;
-import com.zemoso.springboot.gymmanagementsystem.entity.Trainer;
 import com.zemoso.springboot.gymmanagementsystem.service.CustomerService;
 import com.zemoso.springboot.gymmanagementsystem.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
+
+    private CustomerConverter customerConverter = new CustomerConverter();
 
     @Autowired
     private CustomerService customerService;
@@ -26,18 +29,19 @@ public class CustomerController {
     private int trainerId;
 
     @GetMapping("/home")
-    public String getCustomer(@RequestParam("id") int id, Model model){
-        Customer customer = customerService.findById(id);
+    public String getCustomer(@RequestParam("customerId") int customerId, Model model){
+
+        CustomerDTO customer = customerConverter.entityToDto(customerService.findById(customerId));
         model.addAttribute("customer",customer);
+
         return "customer/customer-home";
     }
 
-
     @GetMapping("/list")
-    public String listCustomers(Model theModel, @RequestParam("trainerId") int trainerId) {
+    public String listCustomers(@RequestParam("trainerId") int trainerId, Model theModel) {
 
         this.trainerId = trainerId;
-        List<Customer> customers = customerService.findAll();
+        List<CustomerDTO> customers = customerConverter.entityToDto(customerService.findAll());
         theModel.addAttribute("customers", customers);
         theModel.addAttribute("trainerId", trainerId);
 
@@ -45,9 +49,9 @@ public class CustomerController {
     }
 
     @GetMapping("/showFormForAdd")
-    public String showFormForAdd(Model theModel) {
+    public String showFormForAdd(@RequestParam("trainerId") int trainerId, Model theModel) {
 
-        Customer customer = new Customer();
+        CustomerDTO customer = customerConverter.entityToDto(new Customer());
         theModel.addAttribute("customer", customer);
         theModel.addAttribute("trainerId", trainerId);
 
@@ -55,22 +59,23 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResult
+    public String saveCustomer(@Valid @ModelAttribute("customer") CustomerDTO customer, BindingResult bindingResult
                               ){
 
         if(bindingResult.hasErrors())
             return "customer/customer-form";
-        Trainer trainer = trainerService.findById(trainerId);
-        customerService.saveTrainerCustomer(trainer,customer);
+        customerService.saveTrainerCustomer(trainerService.findById(trainerId),
+                customerConverter.dtoToEntity(customer));
 
-        return "redirect:/customer/list?trainerId="+trainerId;
+        return "redirect:/customers/list?trainerId="+trainerId;
     }
 
     @GetMapping("/update")
     public String showFormForUpdate(@RequestParam("customerId") int customerId,
                                     Model theModel) {
 
-        Customer customer = customerService.findById(customerId);
+        theModel.addAttribute("trainerId", trainerId);
+        CustomerDTO customer = customerConverter.entityToDto(customerService.findById(customerId));
         theModel.addAttribute("customer", customer);
 
         return "customer/customer-form";
@@ -79,7 +84,7 @@ public class CustomerController {
     @GetMapping("/delete")
     public String deleteCustomer(@RequestParam("customerId") int customerId){
         customerService.deleteById(customerId);
-        return "redirect:/customer/list?trainerId="+trainerId;
+        return "redirect:/customers/list?trainerId="+trainerId;
     }
 
 }

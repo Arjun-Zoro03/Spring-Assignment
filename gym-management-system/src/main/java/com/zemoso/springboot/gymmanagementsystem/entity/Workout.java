@@ -27,10 +27,6 @@ public class Workout {
     @Column(name = "trainer_id")
     private int trainerId;
 
-    public Workout() {
-
-    }
-
     @Override
     public String toString() {
         return "Workout{" +

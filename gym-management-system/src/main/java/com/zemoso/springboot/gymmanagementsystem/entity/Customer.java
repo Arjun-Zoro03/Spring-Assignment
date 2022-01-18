@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Customer {
     private String endDate;
 
     @OneToOne(fetch = FetchType.LAZY,mappedBy = "customer",cascade = CascadeType.ALL)
-    private User user;
+    private Users user;
 
     @Override
     public String toString() {
@@ -68,10 +67,6 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "trainer_id")
     )
     private List<Trainer> trainers;
-
-    public Customer() {
-
-    }
 
     public void addTrainer(Trainer trainer){
         if (trainers == null)
